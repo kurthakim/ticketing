@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { OrderStatus } from '@khticket/common';
-import { updateIf } from 'typescript';
 
 interface OrderAttrs {
   id: string;
@@ -20,6 +19,7 @@ interface OrderDoc extends mongoose.Document {
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
+  findByEvent(event: { id: string; version: number }): Promise<OrderDoc | null>;
 }
 
 const orderSchema = new mongoose.Schema(
@@ -51,6 +51,13 @@ const orderSchema = new mongoose.Schema(
 
 orderSchema.set('versionKey', 'version');
 orderSchema.plugin(updateIfCurrentPlugin);
+
+orderSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Order.findOne({
+    _id: event.id,
+    version: event.version - 1,
+  });
+};
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order({
