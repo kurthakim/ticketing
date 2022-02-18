@@ -18,10 +18,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          secret-type: 'generic'
-          secret-name: stripe-secret
-          data: ${{ secrets.STRIPE_KEY }}
+        
+      - run: kubectl create secret generic stripe-secret --from-literal STRIPE_KEY=${{ secrets.STRIPE_KEY }}
 
       # Runs a single command using the runners shell
       - run: cd payments && npm install && npm run test:ci
