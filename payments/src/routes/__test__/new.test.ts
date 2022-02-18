@@ -7,6 +7,7 @@ import { stripe } from '../../stripe';
 import { Payment } from '../../models/payment';
 
 it('returns a 404 when purchasing an order that does not exist', async () => {
+  console.log(process.env.STRIPE_KEY);
   await request(app)
     .post('/api/payments')
     .set('Cookie', global.signin())
