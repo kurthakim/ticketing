@@ -1,0 +1,3 @@
+[submodule "ticketingcommon"]
+	path = ticketingcommon
+	url = https://github.com/kurthakim/ticketingcommon.git
