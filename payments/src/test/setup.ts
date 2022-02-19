@@ -18,6 +18,8 @@ let mongo: any;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfasdf';
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
@@ -35,7 +37,9 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await mongo.stop();
-  await mongoose.connection.close();
+  // await mongoose.connection.close();
+  // for some reason mongoose close is taking a long time so I did not 'await' it
+  mongoose.connection.close();
 });
 
 global.signin = (id?: string) => {

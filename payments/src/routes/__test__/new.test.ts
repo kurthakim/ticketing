@@ -11,7 +11,7 @@ it('returns a 404 when purchasing an order that does not exist', async () => {
     .post('/api/payments')
     .set('Cookie', global.signin())
     .send({
-      token: 'sadada',
+      token: 'sadadaa',
       orderId: new mongoose.Types.ObjectId().toHexString(),
     })
     .expect(404);
